@@ -1,0 +1,41 @@
+<html>
+
+<head>
+    <title>Stock App</title>
+   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+     <style>
+     h1{margin-top:50px}
+     body,h1,h2,h3,h4,h5,p{font-family: "Raleway", sans-serif;margin-left:20px}
+     div{margin-left: 10px}
+     form {margin-left: 50px}
+  </style>
+    <link href="https://cdn.pydata.org/bokeh/release/bokeh-0.12.6.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.6.min.css" rel="stylesheet" type="text/css">
+
+    <script src="https://cdn.pydata.org/bokeh/release/bokeh-0.12.6.min.js"></script>
+    <script src="https://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.6.min.js"></script>
+</head>
+
+<body>
+    <H1>Stock Prices App</H1>
+
+<p>This app shows the stocks prices of the last month. The definition of month is updated daily. </p>
+
+<br>
+    <form action="/">
+        <select name="feature_ticker">
+            {% for feature in list_tickers %} {% if feature == selected_ticker %}
+            <option selected value="{{ feature }}">{{ feature }}</option>
+            {% else %}
+            <option value="{{ feature }}">{{ feature }}</option>
+            {% endif %} {% endfor %}
+        </select>
+        <input type="submit">
+    </form>
+
+    {{ script|safe }} {{ div|safe }}
+
+
+</body>
+
+</html>

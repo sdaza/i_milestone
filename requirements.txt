@@ -1,0 +1,6 @@
+bokeh==0.12.6
+pandas==0.20.3
+quandl==3.2.0
+flask==0.12.0
+gunicorn==19.7.1
+datetime
