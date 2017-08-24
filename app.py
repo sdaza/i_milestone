@@ -20,25 +20,27 @@ start = today - dateutil.relativedelta.relativedelta(months=1)
 today_str = today.strftime('%Y-%m-%d')
 start_str = start.strftime('%Y-%m-%d')
 
-# get data
-import quandl
+# get list of tickers
 quandl.ApiConfig.api_key = '5Yj_Fcq66uKbMsC5-9PJ'
 df = quandl.get_table('WIKI/PRICES',
-                      qopts = { 'columns': ['ticker', 'date', 'open','close'] },
+                      qopts = { 'columns': ['ticker'] },
                     #   ticker = ['AAPL', 'MSFT'],
-                      date = {'gte': start_str, 'lte': today_str}, paginate=True)
-
+                      date = {today_str}, paginate=True)
 list_tickers = list(df.ticker.unique())
 
-# create plot
+# create plot function
 def create_figure(selected_ticker):
+    df = quandl.get_table('WIKI/PRICES',
+                          qopts = { 'columns': ['ticker', 'date', 'open','close'] },
+                          ticker = [selected_ticker],
+                          date = {'gte': start_str, 'lte': today_str}, paginate=True)
+
     source = ColumnDataSource(
         data = {
-             'x' : df.loc[df.ticker==selected_ticker, 'date'],
-             'o' : df.loc[df.ticker==selected_ticker, 'open'],
-             'c' : df.loc[df.ticker==selected_ticker, 'close']
+             'x' : df['date'],
+             'o' : df['open'],
+             'c' : df['close']
             })
-
 
     title = selected_ticker + ' Quandl WIKI Stock Prices, ' + start_str + ' to ' + today_str
     plot = figure(title = title, plot_height = 400, plot_width = 700,
@@ -73,7 +75,7 @@ def index():
     # Determine the selected feature
 	selected_ticker = request.args.get("feature_ticker")
 	if selected_ticker == None:
-		selected_ticker = "AAPL"
+		selected_ticker = "FB"
 
     # Create the plot
 	plot = create_figure(selected_ticker)
